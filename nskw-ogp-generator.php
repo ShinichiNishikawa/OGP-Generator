@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: OGP Generator
-Version: 0.3.1
-Description: This plugin enables you to set OGP tags.
+Version: 0.5
+Description: Generates your OGP with simple configurations.
 Author: Shinichi Nishikawa
 Author URI: http://th-daily.shinichi.me
 Plugin URI: http://th-daily.shinichi.me
@@ -69,7 +69,7 @@ function nskw_ogp_img_field() {
 	<input name="nskw_ogp_img" id="nskw_ogp_img" type="text" value="<?php form_option('nskw_ogp_img'); ?>" /><br />
 	<?php
 	printf( 
-		__( 'Url of the default image. At least 600x315 pixels, but it\'s better to have a bigger one.<br />You can upload your image <a href="%s" target="_blank">here</a>', 'nskw-ogp-generator' ), 
+		__( 'Url of the default image.<br />This image will be used in all pages except posts/pages/cutom posts with post thumbnails.<br />At least 600x315 pixels, but it\'s better to have a bigger one. Recommendation is 1200×630 pixels.<br />You can upload your image <a target="_blank" href="%s" target="_blank">at your "add new media" page</a>.', 'nskw-ogp-generator' ), 
 		admin_url( 'media-new.php' )
 	);
 	
@@ -80,7 +80,7 @@ function nskw_app_id_field() {
 	?>
 	<input name="nskw_ogp_app_id" id="nskw_ogp_app_id" type="text" value="<?php form_option('nskw_ogp_app_id'); ?>" /><br />
 	<?php
-	_e( 'Input your facebook App ID. You can find out what App ID is <a href="https://www.facebook.com/help/community/question/?id=372967692803654">here.</a>', 'nskw-ogp-generator' );
+	_e( 'Input your facebook App ID. Your App ID can be found <a href="https://www.facebook.com/help/community/question/?id=372967692803654">here.</a>', 'nskw-ogp-generator' );
 }
 
 // select box
