@@ -12,11 +12,11 @@ function nskw_ogp_output() {
 	add_filter( 'jetpack_enable_opengraph', '__return_false', 11 );
 
 	$og_title = $og_type = $og_url = $og_img = $og_sitename = $og_locale = $og_description = '';
-	
+
 	// og:site_name
 	$sitename = get_bloginfo( 'name' );
 	$og_sitename = $sitename;
-	
+
 	// og:title
 	if ( is_front_page() || is_home() ) {
 		$og_title = $sitename;
@@ -33,11 +33,11 @@ function nskw_ogp_output() {
 	if ( is_home() ) {
 		$og_type = 'blog';
 	} elseif ( is_front_page() ) {
-		$og_type = 'website';		
+		$og_type = 'website';
 	} else {
 		$og_type = 'article';
 	}
-	
+
 	// og:url
 	if ( is_single() ) {
 		$og_url = get_permalink();
@@ -50,42 +50,43 @@ function nskw_ogp_output() {
 			$og_url = home_url();
 		}
 	}
-	
+
 	// og:img
 	$user_set_image = get_option( 'nskw_ogp_img' );
+	$user_set_image = apply_filters( 'nskw_ogp_user_set_image', $user_set_image );
 	if ( is_singular() && !is_front_page() && !is_home() ) {
-		
+
 		if ( has_post_thumbnail() ) {
 			$ogimage_id  = get_post_thumbnail_id();
-			$ogimage_url = wp_get_attachment_image_src( $ogimage_id,'full', true ); 
-			$og_img = $ogimage_url[0]; 
+			$ogimage_url = wp_get_attachment_image_src( $ogimage_id,'full', true );
+			$og_img = $ogimage_url[0];
 		} else {
 			$id = get_the_ID();
-			$attachments = get_children( array( 
-				'post_parent'    => $id , 
-				'post_type'      => 'attachment' , 
-				'post_mime_type' => 'image' , 
-				'orderby'        => 'menu_order' , 
+			$attachments = get_children( array(
+				'post_parent'    => $id ,
+				'post_type'      => 'attachment' ,
+				'post_mime_type' => 'image' ,
+				'orderby'        => 'menu_order' ,
 				) );
 			foreach ( $attachments as $attachment ) {
 				$image_src = wp_get_attachment_image_src( $attachment->ID, 'full', true );
 				$og_img     = ( isset($image_src[0]) ? $image_src[0] : '' );
 				break;
 			}
-			
+
 			if ( '' == $og_img ) {
 				global $post;
 				if ( preg_match_all('/<img .*src=[\'"]([^\'"]+)[\'"]/', $post->post_content, $matches, PREG_SET_ORDER) ) {
 					$og_img = $matches[0][1];
 				}
-				
+
 			}
 		}
 	}
 	if ( '' == $og_img ) {
 		$og_img = $user_set_image;
 	}
-	
+
 	// og:locale
 	$og_locale = get_locale();
 	if ( 'ja' == $og_locale ) {
@@ -93,7 +94,7 @@ function nskw_ogp_output() {
 	} elseif ( 'th' == $og_locale ) {
 		$og_locale = 'th_TH';
 	}
-	
+
 	// og:description
 	if ( is_singular() && !is_front_page() && !is_home() ) {
 
@@ -123,7 +124,7 @@ function nskw_ogp_output() {
 		?><meta property="<?php echo esc_attr($property); ?>" content="<?php echo $content; ?>" /><?php
 		echo "\n";
 	}
-	
+
 	// let's out put the meta tags.
 	$ogp_tags = array(
 		'og:title'       => $og_title,
@@ -134,7 +135,7 @@ function nskw_ogp_output() {
 		'og:locale'      => $og_locale,
 		'og:description' => $og_description,
 	);
-	
+
 	foreach ( $ogp_tags as $property => $content ) {
 		if ( '' != $content ) {
 			?>
@@ -142,5 +143,5 @@ function nskw_ogp_output() {
 <?php
 		}
 	}
-	
+
 }

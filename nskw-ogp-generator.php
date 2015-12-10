@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: OGP Generator
-Version: 0.5
+Version: 0.5.3
 Description: Generates your OGP with simple configurations.
 Author: Shinichi Nishikawa
 Author URI: http://th-daily.shinichi.me
@@ -18,10 +18,10 @@ function nskw_ogp_settings() {
 
 	// Add section to /wp-admin/options-reading.php
 	add_settings_section(
-		'ogp_settings', 
-		__( 'OGP Settings', 'ogp-generator' ), 
-		'nskw_add_settings_section', 
-		'reading' 
+		'ogp_settings',
+		__( 'OGP Settings', 'ogp-generator' ),
+		'nskw_add_settings_section',
+		'reading'
 	);
 
 	// Add OGP image field
@@ -41,7 +41,7 @@ function nskw_ogp_settings() {
 		'reading',
 		'ogp_settings'
 	);
-	
+
 	// Add a select box
 	add_settings_field(
 		'nskw_ogp_id_select',
@@ -55,7 +55,7 @@ function nskw_ogp_settings() {
 	register_setting( 'reading', 'nskw_ogp_img',       'esc_url' );
 	register_setting( 'reading', 'nskw_ogp_app_id',    'nskw_intval' );
 	register_setting( 'reading', 'nskw_ogp_id_select', 'nskw_white_list' );
-	
+
 }
 
 // Section function.
@@ -68,11 +68,11 @@ function nskw_ogp_img_field() {
 	?>
 	<input name="nskw_ogp_img" id="nskw_ogp_img" type="text" value="<?php form_option('nskw_ogp_img'); ?>" /><br />
 	<?php
-	printf( 
-		__( 'Url of the default image.<br />This image will be used in all pages except posts/pages/cutom posts with post thumbnails.<br />At least 600x315 pixels, but it\'s better to have a bigger one. Recommendation is 1200×630 pixels.<br />You can upload your image <a target="_blank" href="%s" target="_blank">at your "add new media" page</a>.', 'ogp-generator' ), 
+	printf(
+		__( 'Url of the default image.<br />This image will be used in all pages except posts/pages/cutom posts with post thumbnails.<br />At least 600x315 pixels, but it\'s better to have a bigger one. Recommendation is 1200×630 pixels.<br />You can upload your image <a target="_blank" href="%s" target="_blank">at your "add new media" page</a>.', 'ogp-generator' ),
 		admin_url( 'media-new.php' )
 	);
-	
+
 }
 
 // input for id url
@@ -87,7 +87,7 @@ function nskw_app_id_field() {
 function nskw_ogp_id_select_field() {
 	$options = get_nskw_white_list();
 	$value   = get_option( 'nskw_ogp_id_select' );
-	echo '<select name="nskw_ogp_id_select" id="nskw_ogp_id_select">';	
+	echo '<select name="nskw_ogp_id_select" id="nskw_ogp_id_select">';
 	foreach ( $options as $o ) {
 		$selected = ( $o == $value ) ? ' selected="selected"' : '';
 		?>
@@ -100,22 +100,22 @@ function nskw_ogp_id_select_field() {
 
 // intval and if false returns false, not 0.
 function nskw_intval( $id ) {
-	
+
 	if ( $sanitized = intval($id) ) {
 		return $sanitized;
 	} else {
 		return false;
 	}
-	
+
 }
 
 // white list of app/fb
 function nskw_white_list( $text ) {
-	
+
 	$fff = get_nskw_white_list();
-	
+
 	return in_array( $text, $fff ) ? $text: false;
-	
+
 }
 
 function get_nskw_white_list() {
